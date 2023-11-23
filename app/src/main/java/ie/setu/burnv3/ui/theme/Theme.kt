@@ -77,8 +77,8 @@ fun BurnV3Theme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
-    // changed from (!useDarkTheme) to (useDarkTheme) to force dark mode
-    val colors = if (useDarkTheme) {
+
+    val colors = if (!useDarkTheme) {
         LightColors
     } else {
         DarkColors

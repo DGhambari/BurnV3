@@ -6,62 +6,55 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import ie.setu.burnv3.login.LoginScreen
+import ie.setu.burnv3.login.RegisterScreen
+import ie.setu.burnv3.home.HomeScreen
 import ie.setu.burnv3.ui.theme.BurnV3Theme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            BurnV3Theme {
+            val isDarkTheme = remember { mutableStateOf(false) }
+
+            BurnV3Theme(useDarkTheme = isDarkTheme.value) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AppNavigation()
+                    AppNavigation(isDarkTheme)
                 }
             }
         }
     }
 
     @Composable
-    fun AppNavigation() {
+    fun AppNavigation(isDarkTheme: MutableState<Boolean>) {
         val navController = rememberNavController()
         NavHost(navController = navController, startDestination = "login") {
             composable("login") {
-                LoginScreen(onLoginSuccess = {
-                    navController.navigate("main") {
+                LoginScreen(navController, onLoginSuccess = {
+                    navController.navigate("home") {
                         popUpTo("login") { inclusive = true }
                     }
                 })
             }
-            composable("main") {
-                Greeting("Darren")
+            composable("register") {
+                RegisterScreen(onRegistrationSuccess = {
+                    navController.navigate("login")
+                })
+            }
+            composable("home") {
+                HomeScreen(isDarkTheme)
             }
         }
-    }
-}
-
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BurnV3Theme {
-        Greeting("Android")
     }
 }

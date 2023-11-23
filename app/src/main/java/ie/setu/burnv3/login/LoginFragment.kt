@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TextField
 import androidx.compose.material3.Text
@@ -18,8 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import android.content.Context
-import android.widget.TextView
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,14 +27,13 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun LoginScreen(onLoginSuccess: () -> Unit) {
+fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -53,9 +51,6 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
 
         TextField(
             modifier = Modifier.clip(shape = RoundedCornerShape(20.dp)),
-//            trailingIcon = {
-//                Icon(Icons.Filled.Clear, "")
-//            },
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") },
@@ -84,10 +79,8 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
         FilledTonalButton(onClick = { performLogin(email, password, context, onLoginSuccess) }) {
             Text("Login")
         }
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Todo: Write the function for the Register button.
-        FilledTonalButton(onClick = { }) {
+        Spacer(modifier = Modifier.height(8.dp))
+        FilledTonalButton(onClick = { navController.navigate("register")}) {
             Text("Register")
         }
     }
