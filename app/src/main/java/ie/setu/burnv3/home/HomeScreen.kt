@@ -6,23 +6,31 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.*
-import ie.setu.burnv3.models.sampleRoutes
-
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+import ie.setu.burnv3.models.Route
+import ie.setu.burnv3.models.getUserRoutes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(isDarkTheme: MutableState<Boolean>) {
+fun HomeScreen(
+    isDarkTheme: MutableState<Boolean>,
+    navController: NavController,
+    userId: String
+) {
+    var userRoutes by remember { mutableStateOf(emptyList<Route>()) }
+
+    DisposableEffect(userId) {
+        getUserRoutes(userId) { receivedRoutes ->
+            userRoutes = receivedRoutes
+        }
+        onDispose { }
+    }
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Your Routes") },
-
-                // TODO: Complete nav drawer at a later stage
-//                navigationIcon = {
-//                    IconButton(onClick = {  }) {
-//                        Icon(Icons.Filled.Menu, contentDescription = "Menu")
-//                    }
-//                },
                 actions = {
                     Switch(
                         checked = isDarkTheme.value,
@@ -32,7 +40,17 @@ fun HomeScreen(isDarkTheme: MutableState<Boolean>) {
             )
         },
         content = { paddingValues ->
-            RoutesList(sampleRoutes, paddingValues)
+            Box(modifier = Modifier.padding(paddingValues)) {
+                if (userRoutes.isEmpty()) {
+                    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                        Button(onClick = { navController.navigate("addRoute") }) {
+                            Text("Add Route")
+                        }
+                    }
+                } else {
+                    RoutesList(userId)
+                }
+            }
         }
     )
 }

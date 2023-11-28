@@ -17,6 +17,8 @@ import androidx.navigation.compose.composable
 import ie.setu.burnv3.login.LoginScreen
 import ie.setu.burnv3.login.RegisterScreen
 import ie.setu.burnv3.home.HomeScreen
+import ie.setu.burnv3.home.AddRouteForm
+import ie.setu.burnv3.models.getUserId
 import ie.setu.burnv3.ui.theme.BurnV3Theme
 
 class MainActivity : ComponentActivity() {
@@ -53,7 +55,10 @@ class MainActivity : ComponentActivity() {
                 })
             }
             composable("home") {
-                HomeScreen(isDarkTheme)
+                HomeScreen(isDarkTheme, navController, getUserId())
+            }
+            composable("addRoute") {
+                AddRouteForm(navController)
             }
         }
     }

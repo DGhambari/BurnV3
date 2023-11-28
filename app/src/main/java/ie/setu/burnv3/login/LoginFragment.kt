@@ -80,17 +80,38 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
             Text("Login")
         }
         Spacer(modifier = Modifier.height(8.dp))
-        FilledTonalButton(onClick = { navController.navigate("register")}) {
+        FilledTonalButton(onClick = { navController.navigate("register") }) {
             Text("Register")
         }
     }
 }
 
+//fun retrieveUserInfo(userId: String, onUserInfoReceived: (UserModel) -> Unit) {
+//    val db = Firebase.firestore
+//
+//    db.collection("users")
+//        .document(userId)
+//        .get()
+//        .addOnSuccessListener { document ->
+//            if (document != null && document.exists()) {
+//                val user = document.toObject(UserModel::class.java)
+//                if (user != null) {
+//                    onUserInfoReceived(user)
+//                } else {
+//                    Log.e("Firestore", "Error getting user data")
+//                }
+//            }
+//        }
+//        .addOnFailureListener { exception ->
+//            Log.e("Firestore", "Error getting user information", exception)
+//        }
+//}
+
 private fun performLogin(
     email: String,
     password: String,
     context: Context,
-    onLoginSuccess: () -> Unit
+    onLoginSuccess: () -> Unit,
 ) {
     if (email.isEmpty() || password.isEmpty()) {
         Toast.makeText(context, "Email and password must not be empty", Toast.LENGTH_SHORT).show()
@@ -101,10 +122,16 @@ private fun performLogin(
     auth.signInWithEmailAndPassword(email, password)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                onLoginSuccess()
-            } else {
-                val errorMessage = task.exception?.message ?: "Login failed"
-                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                val user = auth.currentUser
+                if (user != null) {
+                    onLoginSuccess()
+                } else {
+                    val errorMessage = task.exception?.message ?: "Login failed"
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                }
             }
         }
 }
+
+
+

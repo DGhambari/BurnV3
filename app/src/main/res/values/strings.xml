@@ -14,4 +14,5 @@
     <string name="title_activity_register_fragment">RegisterFragment</string>
     <string name="title_activity_list_routes_fragment">ListRoutesFragment</string>
     <string name="title_activity_route_list">RouteList</string>
+    <string name="title_activity_add_route">AddRoute</string>
 </resources>
