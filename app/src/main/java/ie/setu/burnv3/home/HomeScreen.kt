@@ -19,7 +19,7 @@ fun HomeScreen(
     navController: NavController,
     userId: String
 ) {
-    var userRoutes by remember { mutableStateOf(emptyList<Route>()) }
+    var userRoutes by remember { mutableStateOf<List<Route>>(emptyList()) }
 
     DisposableEffect(userId) {
         getUserRoutes(userId) { receivedRoutes ->
@@ -48,7 +48,7 @@ fun HomeScreen(
                         }
                     }
                 } else {
-                    RoutesList(userId)
+                    RoutesList(userId, navController)
                 }
             }
         }

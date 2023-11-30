@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import android.content.Context
+import androidx.compose.material3.TextButton
 import androidx.navigation.NavController
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -46,7 +47,7 @@ fun AddRouteForm(navController: NavController) {
     ) {
 
         TextField(
-            modifier = Modifier.clip(shape = RoundedCornerShape(20.dp)),
+            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
             value = county,
             onValueChange = { county = it },
             label = { Text("County") },
@@ -57,7 +58,7 @@ fun AddRouteForm(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
-            modifier = Modifier.clip(shape = RoundedCornerShape(20.dp)),
+            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
             value = area,
             onValueChange = { area = it },
             label = { Text("Area") },
@@ -68,7 +69,7 @@ fun AddRouteForm(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
-            modifier = Modifier.clip(shape = RoundedCornerShape(20.dp)),
+            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
             value = description,
             onValueChange = { description = it },
             label = { Text("Description") },
@@ -83,6 +84,10 @@ fun AddRouteForm(navController: NavController) {
             addRouteToFirestore(newRoute, getUserId(), context, navController)
         }) {
             Text("Add Route")
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        TextButton(onClick = { navController.navigateUp() }) {
+            Text("Cancel")
         }
     }
 }

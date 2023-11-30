@@ -23,7 +23,9 @@ fun getUserRoutes(userId: String, onRoutesReceived: (List<Route>) -> Unit) {
         .addOnSuccessListener { result ->
             val routes = mutableListOf<Route>()
             for (document in result) {
-                val route = document.toObject(Route::class.java)
+                val route = document.toObject(Route::class.java).apply {
+                    id = document.id
+                }
                 routes.add(route)
             }
             onRoutesReceived(routes)

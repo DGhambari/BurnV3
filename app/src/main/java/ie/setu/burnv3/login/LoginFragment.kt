@@ -50,7 +50,7 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
 //        Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
-            modifier = Modifier.clip(shape = RoundedCornerShape(20.dp)),
+            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") },
@@ -61,7 +61,7 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
-            modifier = Modifier.clip(shape = RoundedCornerShape(20.dp)),
+            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
@@ -125,10 +125,13 @@ private fun performLogin(
                 val user = auth.currentUser
                 if (user != null) {
                     onLoginSuccess()
-                } else {
-                    val errorMessage = task.exception?.message ?: "Login failed"
-                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                 }
+            } else {
+                Toast.makeText(
+                    context,
+                    task.exception?.message ?: "Login failed",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 }
