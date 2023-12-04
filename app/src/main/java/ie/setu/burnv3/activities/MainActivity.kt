@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val isDarkTheme = remember { mutableStateOf(false) }
+            val isDarkTheme = remember { mutableStateOf(true) }
 
             BurnV3Theme(useDarkTheme = isDarkTheme.value) {
                 Surface(

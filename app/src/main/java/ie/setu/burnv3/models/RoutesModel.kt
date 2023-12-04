@@ -10,7 +10,7 @@ data class Route(
     var startLng: Double = 0.0,
     var stopLat: Double = 0.0,
     var stopLng: Double = 0.0,
-    //val imageURL: String
+    val imageUrl: String? = "",
 )
 
 //val sampleRoutes = listOf(

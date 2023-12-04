@@ -24,10 +24,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import android.content.Context
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.TextButton
 import androidx.navigation.NavController
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import ie.setu.burnv3.images.ImagePicker
 import ie.setu.burnv3.models.Route
 import ie.setu.burnv3.models.getUserId
 
@@ -39,6 +41,8 @@ fun AddRouteForm(navController: NavController) {
     var area by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     val context = LocalContext.current
+    var imageUrl by remember { mutableStateOf<String?>(null) }
+    var isImageUploading by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.padding(16.dp),
@@ -78,12 +82,23 @@ fun AddRouteForm(navController: NavController) {
                 unfocusedIndicatorColor = Color.Transparent
             )
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        FilledTonalButton(onClick = {
-            val newRoute = Route(county = county, area = area, description = description)
-            addRouteToFirestore(newRoute, getUserId(), context, navController)
-        }) {
-            Text("Add Route")
+        //Spacer(modifier = Modifier.height(8.dp))
+        ImagePicker(
+            onImageUploaded = { url -> imageUrl = url },
+            onImageUploading = { uploading -> isImageUploading = uploading }
+        )
+        if (isImageUploading) {
+            CircularProgressIndicator()
+        } else {
+            FilledTonalButton(
+                onClick = {
+                    val newRoute = Route(county = county, area = area, description = description, imageUrl = imageUrl)
+                    addRouteToFirestore(newRoute, getUserId(), context, navController)
+                },
+                enabled = imageUrl != null
+            ) {
+                Text("Add Route")
+            }
         }
         Spacer(modifier = Modifier.height(8.dp))
         TextButton(onClick = { navController.navigateUp() }) {
@@ -109,7 +124,8 @@ fun addRouteToFirestore(
         "startLat" to route.startLat,
         "startLng" to route.startLng,
         "stopLat" to route.stopLat,
-        "stopLng" to route.stopLng
+        "stopLng" to route.stopLng,
+        "imageUrl" to route.imageUrl
     )
 
     db.collection("routes").add(routeData)
@@ -119,7 +135,6 @@ fun addRouteToFirestore(
                 .update("routeId", routeId)
                 .addOnSuccessListener {
                     Toast.makeText(context, "Route added successfully!", Toast.LENGTH_SHORT).show()
-                    //route.id = routeId
                     navController.navigate("home") {
                         popUpTo("home") { inclusive = true }
                     }

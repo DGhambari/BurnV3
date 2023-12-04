@@ -2,6 +2,9 @@ package ie.setu.burnv3.models
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.firestore.ktx.firestore
@@ -14,6 +17,7 @@ fun getUserId(): String {
     }
     return userId
 }
+
 fun getUserRoutes(userId: String, onRoutesReceived: (List<Route>) -> Unit) {
     val db = Firebase.firestore
 
@@ -44,43 +48,53 @@ fun getUserRoutes(userId: String, onRoutesReceived: (List<Route>) -> Unit) {
 //    }
 //}
 
-//fun getUserProfile(user: UserModel){
-//    val user = Firebase.auth.currentUser
-//    user?.let {
-//        val user.firstName = it.displayName
-//        val email = it.email
-//        val photoUrl = it.photoUrl
-//
-//        // Check if user's email is verified
-//        val emailVerified = it.isEmailVerified
-//
-//        // The user's ID, unique to the Firebase project. Do NOT use this value to
-//        // authenticate with your backend server, if you have one. Use
-//        // FirebaseUser.getIdToken() instead.
-//        val uid = it.uid
-//    }
-//}
+fun getUserProfile(): FirebaseUser? {
+    val user = Firebase.auth.currentUser
+    user?.let {
+        for (profile in it.providerData) {
+            val providerId = profile.providerId
+            val uid = profile.uid
 
-fun sendPasswordReset() {
-
-    val emailAddress = "user@example.com"
-
-    Firebase.auth.sendPasswordResetEmail(emailAddress)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.d(TAG, "Email sent.")
-            }
+            val name = profile.displayName
+            val email = profile.email
+            val photoUrl = profile.photoUrl
         }
+    }
+    return user
 }
 
-//fun signOut() {
-//    AuthUI.getInstance()
-//        .signOut(this)
-//        .addOnCompleteListener {
-//        }
-//}
+fun sendPasswordReset(firebaseUser: FirebaseUser) {
 
-fun updateUserProfile(){
+    val emailAddress = firebaseUser.email
+
+    if (emailAddress != null) {
+        Firebase.auth.sendPasswordResetEmail(emailAddress)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "Email sent.")
+                }
+            }
+    }
+}
+
+fun signOut(navController: NavController) {
+    try {
+        FirebaseAuth.getInstance().signOut()
+    } catch (e: Exception) {
+        Log.e("SignOut", "Error signing out: ${e.message}")
+    }
+    val user = Firebase.auth.currentUser
+    if (user != null) {
+        Log.e("SignOut", "User has not been successfully logged out. User ID: $user")
+
+    } else {
+        navController.navigate("login") {
+            popUpTo("home") { inclusive = true }
+        }
+    }
+}
+
+fun updateUserProfile() {
     val user = Firebase.auth.currentUser
 
     val profileUpdates = userProfileChangeRequest {

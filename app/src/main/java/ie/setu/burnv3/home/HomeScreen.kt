@@ -1,16 +1,24 @@
 package ie.setu.burnv3.home
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import ie.setu.burnv3.models.Route
 import ie.setu.burnv3.models.getUserRoutes
+import ie.setu.burnv3.models.signOut
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,13 +37,19 @@ fun HomeScreen(
     }
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Your Routes") },
+            CenterAlignedTopAppBar(
+                //modifier = Modifier.height(50.dp),
+                title = { Text("Your Routes", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center, fontSize = 20.sp) },
                 actions = {
-                    Switch(
-                        checked = isDarkTheme.value,
-                        onCheckedChange = { isDarkTheme.value = it }
-                    )
+                        IconButton(onClick = { isDarkTheme.value = !isDarkTheme.value }) {
+                            Icon(
+                                imageVector = if (isDarkTheme.value) Icons.Filled.LightMode else Icons.Filled.DarkMode,
+                                contentDescription = "Switch Theme"
+                            )
+                        }
+                    IconButton(onClick = { signOut(navController) }) {
+                        Icon(imageVector = Icons.Default.ExitToApp, contentDescription = "Sign Out")
+                    }
                 }
             )
         },
@@ -51,6 +65,23 @@ fun HomeScreen(
                     RoutesList(userId, navController)
                 }
             }
-        }
-    )
+        },
+        bottomBar = {
+            BottomAppBar(
+                modifier = Modifier.height(50.dp),
+                actions = {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        IconButton(
+                            onClick = { navController.navigate("addRoute") },
+                            content = { Icon(Icons.Filled.Add, contentDescription = "Add Route") }
+                        )
+                    }
+                }
+            )
+        })
 }
+
+

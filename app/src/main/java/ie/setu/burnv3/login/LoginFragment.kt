@@ -22,11 +22,13 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -69,7 +71,11 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
+                autoCorrect = false
+            )
         )
 
         // Todo: Write the function for the Forgot Password button.
@@ -85,27 +91,6 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
         }
     }
 }
-
-//fun retrieveUserInfo(userId: String, onUserInfoReceived: (UserModel) -> Unit) {
-//    val db = Firebase.firestore
-//
-//    db.collection("users")
-//        .document(userId)
-//        .get()
-//        .addOnSuccessListener { document ->
-//            if (document != null && document.exists()) {
-//                val user = document.toObject(UserModel::class.java)
-//                if (user != null) {
-//                    onUserInfoReceived(user)
-//                } else {
-//                    Log.e("Firestore", "Error getting user data")
-//                }
-//            }
-//        }
-//        .addOnFailureListener { exception ->
-//            Log.e("Firestore", "Error getting user information", exception)
-//        }
-//}
 
 private fun performLogin(
     email: String,

@@ -9,10 +9,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Icon
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
@@ -55,13 +51,6 @@ fun RoutesList(userId: String, navController: NavController) {
                     Log.e("Routes", "Route id is null")
                 }
             }
-        }
-        SmallFloatingActionButton(
-            onClick = { navController.navigate("addRoute") },
-            modifier = Modifier
-                .padding(top = 8.dp)
-        ) {
-            Icon(imageVector = Icons.Filled.Add, contentDescription = "Add")
         }
     }
 }
