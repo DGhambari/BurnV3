@@ -82,8 +82,8 @@ fun AddRouteForm(navController: NavController) {
                 unfocusedIndicatorColor = Color.Transparent
             )
         )
-        //Spacer(modifier = Modifier.height(8.dp))
         ImagePicker(
+            initialImageUrl = null,
             onImageUploaded = { url -> imageUrl = url },
             onImageUploading = { uploading -> isImageUploading = uploading }
         )
@@ -92,7 +92,12 @@ fun AddRouteForm(navController: NavController) {
         } else {
             FilledTonalButton(
                 onClick = {
-                    val newRoute = Route(county = county, area = area, description = description, imageUrl = imageUrl)
+                    val newRoute = Route(
+                        county = county,
+                        area = area,
+                        description = description,
+                        imageUrl = imageUrl
+                    )
                     addRouteToFirestore(newRoute, getUserId(), context, navController)
                 },
                 enabled = imageUrl != null

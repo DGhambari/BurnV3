@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun ImagePicker(
+    initialImageUrl: String?,
     onImageUploaded: (String) -> Unit,
     onImageUploading: (Boolean) -> Unit
 ) {
@@ -36,34 +38,43 @@ fun ImagePicker(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         selectedImageUri = uri
-        uri?.let {
+        if (uri != null) {
             isImageUploading = true
             onImageUploading(true)
             uploadImageToFirebaseStorage(
-                it,
+                uri,
                 onUploadEnd = { uploadedImageUrl ->
                     isImageUploading = false
                     onImageUploading(false)
-                    if (uploadedImageUrl != null) {
-                        onImageUploaded(uploadedImageUrl)
+                    uploadedImageUrl?.let { url ->
+                        onImageUploaded(url)
                     }
                 }
             )
         }
     }
 
-    Column (
+    Column(
         modifier = Modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
-    )
-        {
+    ) {
         FilledTonalButton(onClick = { imagePickerLauncher.launch("image/*") }) {
             Text("Pick Image")
         }
-            Spacer(modifier = Modifier.height(8.dp))
-        selectedImageUri?.let { uri ->
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        val imageToDisplay = selectedImageUri ?: initialImageUrl?.let { Uri.parse(it) }
+        imageToDisplay?.let { uri ->
             Image(painter = rememberAsyncImagePainter(uri), contentDescription = "Selected Image")
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        if (isImageUploading) {
+            CircularProgressIndicator()
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
@@ -80,7 +91,7 @@ fun uploadImageToFirebaseStorage(
         taskSnapshot.storage.downloadUrl.addOnSuccessListener { downloadUrl ->
             onUploadEnd(downloadUrl.toString())
         }
-    }.addOnFailureListener {exception ->
+    }.addOnFailureListener { exception ->
         Log.e("Storage", "Upload failed", exception)
         onUploadEnd(null)
     }

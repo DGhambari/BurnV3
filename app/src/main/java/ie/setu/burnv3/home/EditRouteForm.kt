@@ -1,6 +1,7 @@
 package ie.setu.burnv3.home
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import ie.setu.burnv3.images.ImagePicker
 import ie.setu.burnv3.models.Route
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,12 +44,17 @@ fun EditRouteForm(routeId: String, navController: NavController) {
     var description by remember { mutableStateOf("") }
     val context = LocalContext.current
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
+    var currentImageUrl by remember { mutableStateOf<String?>(null) }
+    var isImageLoading by remember { mutableStateOf(false) }
 
     LaunchedEffect(routeId) {
-        loadRouteData(routeId) { route ->
-            county = route.county
-            area = route.area
-            description = route.description
+        loadRouteData(routeId) { fetchedRoute ->
+            county = fetchedRoute.county
+            area = fetchedRoute.area
+            description = fetchedRoute.description
+            currentImageUrl = fetchedRoute.imageUrl
+            Log.d("EditRouteForm", "Loaded Image URL: $currentImageUrl")
+            isImageLoading = false
         }
     }
 
@@ -89,12 +96,26 @@ fun EditRouteForm(routeId: String, navController: NavController) {
                 unfocusedIndicatorColor = Color.Transparent
             )
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        FilledTonalButton(onClick = {
-            val updatedRoute = Route(routeId, county, area, description)
-            updateRouteInFirestore(updatedRoute, context, navController)
-        }) {
-            Text("Update Route")
+        Log.d("EditRouteForm", "Passing Image URL to Picker: $currentImageUrl")
+        ImagePicker(
+            initialImageUrl = currentImageUrl,
+            onImageUploaded = { newImageUrl -> currentImageUrl = newImageUrl },
+            onImageUploading = { uploading -> isImageLoading = uploading }
+        )
+
+        if (!isImageLoading) {
+            FilledTonalButton(onClick = {
+                val updatedRoute = Route(
+                    id = routeId,
+                    county = county,
+                    area = area,
+                    description = description,
+                    imageUrl = currentImageUrl
+                )
+                updateRouteInFirestore(updatedRoute, context, navController)
+            }) {
+                Text("Update Route")
+            }
         }
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedButton(onClick = { showDeleteConfirmationDialog = true }) {
@@ -124,12 +145,15 @@ fun EditRouteForm(routeId: String, navController: NavController) {
     }
 }
 
-fun deleteRoute(routeId: String, context: Context, navController: NavController) {
+fun deleteRoute(routeId: String?, context: Context, navController: NavController) {
     val db = Firebase.firestore
+    if (routeId == null) {
+        Toast.makeText(context, "Route ID is null", Toast.LENGTH_LONG).show()
+        return
+    }
     db.collection("routes").document(routeId)
         .delete()
         .addOnSuccessListener {
-            // Navigate back to the home screen after successful deletion
             navController.navigate("home") {
                 popUpTo("home") { inclusive = true }
             }
@@ -139,6 +163,7 @@ fun deleteRoute(routeId: String, context: Context, navController: NavController)
                 .show()
         }
 }
+
 fun loadRouteData(routeId: String, onRouteLoaded: (Route) -> Unit) {
     val db = Firebase.firestore
     db.collection("routes").document(routeId).get()
@@ -157,13 +182,15 @@ fun updateRouteInFirestore(
     val routeId = route.id
 
     if (routeId != null) {
-        val routeData = hashMapOf(
+        val routeData = mapOf(
             "county" to route.county,
             "area" to route.area,
-            "description" to route.description
-        )
+            "description" to route.description,
+            "imageUrl" to route.imageUrl
+        ).filterValues { it != null }
+
         db.collection("routes").document(routeId)
-            .update(routeData as Map<String, Any>)
+            .update(routeData)
             .addOnSuccessListener {
                 Toast.makeText(context, "Route updated successfully!", Toast.LENGTH_SHORT).show()
                 navController.navigate("home") {
