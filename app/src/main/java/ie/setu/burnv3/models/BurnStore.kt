@@ -63,19 +63,6 @@ fun getUserProfile(): FirebaseUser? {
     return user
 }
 
-fun sendPasswordReset(firebaseUser: FirebaseUser) {
-
-    val emailAddress = firebaseUser.email
-
-    if (emailAddress != null) {
-        Firebase.auth.sendPasswordResetEmail(emailAddress)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "Email sent.")
-                }
-            }
-    }
-}
 
 fun signOut(navController: NavController) {
     try {

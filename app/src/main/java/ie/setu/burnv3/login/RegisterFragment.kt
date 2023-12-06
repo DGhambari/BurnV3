@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -39,8 +40,15 @@ fun RegisterScreen(onRegistrationSuccess: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        // Todo: Configure the fonts
+        Text("BURN", fontSize = 50.sp)
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text("Register Below", fontSize = 20.sp)
+        Spacer(modifier = Modifier.height(16.dp))
+
         TextField(
-            modifier = Modifier.clip(shape = RoundedCornerShape(20.dp)),
+            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
             value = firstName,
             onValueChange = { firstName = it },
             label = { Text("First Name") },
@@ -49,9 +57,9 @@ fun RegisterScreen(onRegistrationSuccess: () -> Unit) {
                 unfocusedIndicatorColor = Color.Transparent
             )
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         TextField(
-            modifier = Modifier.clip(shape = RoundedCornerShape(20.dp)),
+            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
             value = lastName,
             onValueChange = { lastName = it },
             label = { Text("Last Name") },
@@ -60,9 +68,9 @@ fun RegisterScreen(onRegistrationSuccess: () -> Unit) {
                 unfocusedIndicatorColor = Color.Transparent
             )
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         TextField(
-            modifier = Modifier.clip(shape = RoundedCornerShape(20.dp)),
+            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") },
@@ -71,9 +79,9 @@ fun RegisterScreen(onRegistrationSuccess: () -> Unit) {
                 unfocusedIndicatorColor = Color.Transparent
             )
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         TextField(
-            modifier = Modifier.clip(shape = RoundedCornerShape(20.dp)),
+            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
@@ -83,9 +91,9 @@ fun RegisterScreen(onRegistrationSuccess: () -> Unit) {
             ),
             visualTransformation = PasswordVisualTransformation()
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         TextField(
-            modifier = Modifier.clip(shape = RoundedCornerShape(20.dp)),
+            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
             label = { Text("Confirm Password") },

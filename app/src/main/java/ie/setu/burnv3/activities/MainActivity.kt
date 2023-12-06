@@ -21,6 +21,7 @@ import ie.setu.burnv3.login.RegisterScreen
 import ie.setu.burnv3.home.HomeScreen
 import ie.setu.burnv3.home.AddRouteForm
 import ie.setu.burnv3.home.EditRouteForm
+import ie.setu.burnv3.login.ForgotPassword
 import ie.setu.burnv3.models.getUserId
 import ie.setu.burnv3.ui.theme.BurnV3Theme
 
@@ -63,6 +64,9 @@ class MainActivity : ComponentActivity() {
             }
             composable("addRoute") {
                 AddRouteForm(navController)
+            }
+            composable("forgotPassword") {
+                ForgotPassword(navController)
             }
             composable("editRoute/{routeId}") { backStackEntry ->
                 val routeId = backStackEntry.arguments?.getString("routeId")

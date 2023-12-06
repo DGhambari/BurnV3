@@ -29,6 +29,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -47,10 +48,13 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
         verticalArrangement = Arrangement.Center
     ) {
 
-        // Todo: Removed the title now until I can get the fonts configured correctly.
-//        Text("BURN", fontSize = 50.sp)
-//        Spacer(modifier = Modifier.height(16.dp))
+        // Todo: Configure the fonts
+        Text("BURN", fontSize = 50.sp)
 
+        Spacer(modifier = Modifier.height(16.dp))
+        Text("Login or Register Below", fontSize = 20.sp)
+
+        Spacer(modifier = Modifier.height(16.dp))
         TextField(
             modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
             value = email,
@@ -61,7 +65,8 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
                 unfocusedIndicatorColor = Color.Transparent
             )
         )
-        Spacer(modifier = Modifier.height(8.dp))
+
+        Spacer(modifier = Modifier.height(12.dp))
         TextField(
             modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
             value = password,
@@ -78,13 +83,15 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
             )
         )
 
-        // Todo: Write the function for the Forgot Password button.
-        TextButton(onClick = { }) {
+        Spacer(modifier = Modifier.height(12.dp))
+        TextButton(onClick = { navController.navigate("forgotPassword") }) {
             Text("Forgot Password")
         }
+
         FilledTonalButton(onClick = { performLogin(email, password, context, onLoginSuccess) }) {
             Text("Login")
         }
+
         Spacer(modifier = Modifier.height(8.dp))
         FilledTonalButton(onClick = { navController.navigate("register") }) {
             Text("Register")
