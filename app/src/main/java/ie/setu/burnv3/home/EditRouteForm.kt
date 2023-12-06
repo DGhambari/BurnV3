@@ -65,8 +65,9 @@ fun EditRouteForm(routeId: String, navController: NavController) {
     ) {
 
         TextField(
-            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
+            modifier = Modifier.padding(horizontal = 39.dp).clip(shape = RoundedCornerShape(10.dp)),
             value = county,
+            maxLines = 1,
             onValueChange = { county = it },
             label = { Text("County") },
             colors = TextFieldDefaults.textFieldColors(
@@ -76,8 +77,9 @@ fun EditRouteForm(routeId: String, navController: NavController) {
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
-            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
+            modifier = Modifier.padding(horizontal = 39.dp).clip(shape = RoundedCornerShape(10.dp)),
             value = area,
+            maxLines = 1,
             onValueChange = { area = it },
             label = { Text("Area") },
             colors = TextFieldDefaults.textFieldColors(
@@ -87,8 +89,9 @@ fun EditRouteForm(routeId: String, navController: NavController) {
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
-            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
+            modifier = Modifier.padding(horizontal = 39.dp).clip(shape = RoundedCornerShape(10.dp)),
             value = description,
+            maxLines = 1,
             onValueChange = { description = it },
             label = { Text("Description") },
             colors = TextFieldDefaults.textFieldColors(

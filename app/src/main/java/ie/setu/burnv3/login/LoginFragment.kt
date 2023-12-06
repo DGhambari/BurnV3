@@ -24,10 +24,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.ktx.auth
@@ -49,10 +51,16 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
     ) {
 
         // Todo: Configure the fonts
-        Text("BURN", fontSize = 50.sp)
+        Text("BURN",
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 40.sp,
+            )
 
         Spacer(modifier = Modifier.height(16.dp))
-        Text("Login or Register Below", fontSize = 20.sp)
+        Text("Login or Register Below",
+            style = MaterialTheme.typography.titleMedium,
+            fontSize = 18.sp)
 
         Spacer(modifier = Modifier.height(16.dp))
         TextField(
@@ -88,7 +96,9 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
             Text("Forgot Password")
         }
 
-        FilledTonalButton(onClick = { performLogin(email, password, context, onLoginSuccess) }) {
+//        FilledTonalButton(onClick = { performLogin(email, password, context, onLoginSuccess) }) {
+        //TODO revert when finished testing
+        FilledTonalButton(onClick = { performLogin("homer@simpson.com", "Homer123", context, onLoginSuccess) }) {
             Text("Login")
         }
 

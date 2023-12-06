@@ -43,6 +43,8 @@ fun AddRouteForm(navController: NavController) {
     val context = LocalContext.current
     var imageUrl by remember { mutableStateOf<String?>(null) }
     var isImageUploading by remember { mutableStateOf(false) }
+    val maxDescriptionChar = 200
+    val maxHeadingChar = 20
 
     Column(
         modifier = Modifier.padding(16.dp),
@@ -51,9 +53,12 @@ fun AddRouteForm(navController: NavController) {
     ) {
 
         TextField(
-            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
+            modifier = Modifier.padding(horizontal = 39.dp).clip(shape = RoundedCornerShape(10.dp)),
             value = county,
-            onValueChange = { county = it },
+            onValueChange = {
+                if (it.length <= maxHeadingChar)
+                    county = it },
+            singleLine = true,
             label = { Text("County") },
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = Color.Transparent,
@@ -62,9 +67,13 @@ fun AddRouteForm(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
-            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
+            modifier = Modifier.padding(horizontal = 39.dp).clip(shape = RoundedCornerShape(10.dp)),
             value = area,
-            onValueChange = { area = it },
+            maxLines = 1,
+            onValueChange = {
+                if (it.length <= maxHeadingChar)
+                    area = it },
+            singleLine = true,
             label = { Text("Area") },
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = Color.Transparent,
@@ -73,9 +82,13 @@ fun AddRouteForm(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
-            modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
+            modifier = Modifier.padding(horizontal = 39.dp).clip(shape = RoundedCornerShape(10.dp)),
             value = description,
-            onValueChange = { description = it },
+            maxLines = 1,
+            onValueChange = {
+                if (it.length <= maxDescriptionChar)
+                    description = it },
+            singleLine = true,
             label = { Text("Description") },
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = Color.Transparent,

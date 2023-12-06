@@ -9,12 +9,12 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,7 +23,11 @@ fun MyTopAppBar(
     onSignOut: () -> Unit
 ) {
     CenterAlignedTopAppBar(
-        title = { Text("Your Routes", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center, fontSize = 20.sp) },
+        title = { Text("Your Routes",
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+//            fontSize = 20.sp,
+            style = MaterialTheme.typography.headlineSmall) },
         actions = {
             IconButton(onClick = { isDarkTheme.value = !isDarkTheme.value }) {
                 Icon(

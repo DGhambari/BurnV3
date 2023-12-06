@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -41,12 +43,18 @@ fun RegisterScreen(onRegistrationSuccess: () -> Unit) {
         verticalArrangement = Arrangement.Center
     ) {
         // Todo: Configure the fonts
-        Text("BURN", fontSize = 50.sp)
-        Spacer(modifier = Modifier.height(16.dp))
+        Text("BURN",
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 40.sp,
+        )
 
-        Text("Register Below", fontSize = 20.sp)
         Spacer(modifier = Modifier.height(16.dp))
+        Text("Register Below",
+            style = MaterialTheme.typography.titleMedium,
+            fontSize = 18.sp)
 
+        Spacer(modifier = Modifier.height(16.dp))
         TextField(
             modifier = Modifier.clip(shape = RoundedCornerShape(10.dp)),
             value = firstName,
