@@ -96,9 +96,9 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
             Text("Forgot Password")
         }
 
-//        FilledTonalButton(onClick = { performLogin(email, password, context, onLoginSuccess) }) {
+        FilledTonalButton(onClick = { performLogin(email, password, context, onLoginSuccess) }) {
         //TODO revert when finished testing
-        FilledTonalButton(onClick = { performLogin("homer@simpson.com", "Homer123", context, onLoginSuccess) }) {
+
             Text("Login")
         }
 

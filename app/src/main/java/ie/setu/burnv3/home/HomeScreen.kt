@@ -8,8 +8,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import ie.setu.burnv3.appbars.MyBottomAppBar
-import ie.setu.burnv3.appbars.MyTopAppBar
+import ie.setu.burnv3.appBars.MyBottomAppBar
+import ie.setu.burnv3.appBars.MyTopAppBar
 import ie.setu.burnv3.models.Route
 import ie.setu.burnv3.models.getUserRoutes
 import ie.setu.burnv3.models.signOut
@@ -19,7 +19,8 @@ import ie.setu.burnv3.models.signOut
 fun HomeScreen(
     isDarkTheme: MutableState<Boolean>,
     navController: NavController,
-    userId: String
+    userId: String,
+    drawerState: DrawerState
 ) {
     var userRoutes by remember { mutableStateOf<List<Route>>(emptyList()) }
 
@@ -32,6 +33,7 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             MyTopAppBar(
+                drawerState = drawerState,
                 isDarkTheme = isDarkTheme,
                 onSignOut = { signOut(navController) }
             )

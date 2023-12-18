@@ -3,7 +3,6 @@ package ie.setu.burnv3.models
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.navigation.NavController
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.userProfileChangeRequest
@@ -51,26 +50,24 @@ fun getUserRoutes(userId: String, onRoutesReceived: (List<Route>) -> Unit) {
 fun getUserProfile(): FirebaseUser? {
     val user = Firebase.auth.currentUser
     user?.let {
-        for (profile in it.providerData) {
-            val providerId = profile.providerId
-            val uid = profile.uid
-
-            val name = profile.displayName
-            val email = profile.email
-            val photoUrl = profile.photoUrl
-        }
+        val name = it.displayName
+        val email = it.email
+        val photoUrl = it.photoUrl
     }
     return user
 }
 
 
 fun signOut(navController: NavController) {
+    val user = Firebase.auth.currentUser
+
     try {
-        FirebaseAuth.getInstance().signOut()
+        //FirebaseAuth.getInstance().signOut()
+        Firebase.auth.signOut()
     } catch (e: Exception) {
         Log.e("SignOut", "Error signing out: ${e.message}")
     }
-    val user = Firebase.auth.currentUser
+
     if (user != null) {
         Log.e("SignOut", "User has not been successfully logged out. User ID: $user")
 
@@ -81,19 +78,19 @@ fun signOut(navController: NavController) {
     }
 }
 
-fun updateUserProfile() {
-    val user = Firebase.auth.currentUser
-
-    val profileUpdates = userProfileChangeRequest {
-        displayName = "Jane Q. User"
-        //photoUri = Uri.parse("https://example.com/jane-q-user/profile.jpg")
-    }
-
-    user!!.updateProfile(profileUpdates)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.d(TAG, "User profile updated.")
-            }
-        }
-}
+//fun updateUserProfile() {
+//    val user = Firebase.auth.currentUser
+//
+//    val profileUpdates = userProfileChangeRequest {
+//        displayName = "Jane Q. User"
+//        //photoUri = Uri.parse("https://example.com/jane-q-user/profile.jpg")
+//    }
+//
+//    user!!.updateProfile(profileUpdates)
+//        .addOnCompleteListener { task ->
+//            if (task.isSuccessful) {
+//                Log.d(TAG, "User profile updated.")
+//            }
+//        }
+//}
 
