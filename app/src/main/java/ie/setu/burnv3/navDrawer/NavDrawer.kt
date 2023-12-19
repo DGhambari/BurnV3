@@ -14,6 +14,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -26,6 +27,7 @@ import ie.setu.burnv3.models.getUserProfile
 fun NavDrawer(
     drawerState: DrawerState,
     navController: NavController,
+    isMapActive: MutableState<Boolean>,
     content: @Composable () -> Unit
 ) {
     //val scope = rememberCoroutineScope()
@@ -62,7 +64,7 @@ fun NavDrawer(
             }
         },
         drawerState = drawerState,
-        gesturesEnabled = true,
+        gesturesEnabled = !isMapActive.value,
     )
     {
         content()

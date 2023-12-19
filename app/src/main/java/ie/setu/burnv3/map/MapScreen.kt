@@ -1,20 +1,12 @@
 package ie.setu.burnv3.map
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
-import com.mapbox.geojson.Point
+import ie.setu.burnv3.models.getUserId
 
 @Composable
-fun MapScreen() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        MapBoxMap(
-            point = Point.fromLngLat(-0.6333, 35.6971),
-            modifier = Modifier
-                .fillMaxSize()
-        )
-    }
+fun MapScreen(isMapActive: MutableState<Boolean>) {
+    GoogleMapComposable(modifier = Modifier.fillMaxSize(), getUserId(), isMapActive)
 }

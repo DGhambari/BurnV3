@@ -40,14 +40,15 @@ class MainActivity : ComponentActivity() {
             val isDarkTheme = remember { mutableStateOf(true) }
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
             val navController = rememberNavController()
+            val isMapActive = remember { mutableStateOf(false) }
 
             BurnV3Theme(useDarkTheme = isDarkTheme.value) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavDrawer(drawerState, navController) {
-                        AppNavigation(isDarkTheme, drawerState, navController)
+                    NavDrawer(drawerState, navController, isMapActive) {
+                        AppNavigation(isDarkTheme, drawerState, navController, isMapActive)
                     }
                 }
             }
@@ -61,7 +62,8 @@ class MainActivity : ComponentActivity() {
 fun AppNavigation(
     isDarkTheme: MutableState<Boolean>,
     drawerState: DrawerState,
-    navController: NavHostController
+    navController: NavHostController,
+    isMapActive: MutableState<Boolean>
 ) {
     val context = LocalContext.current
 
@@ -88,7 +90,7 @@ fun AppNavigation(
             ForgotPassword(navController)
         }
         composable("map") {
-            MapScreen()
+            MapScreen(isMapActive)
         }
 
         composable("editRoute/{routeId}") { backStackEntry ->
