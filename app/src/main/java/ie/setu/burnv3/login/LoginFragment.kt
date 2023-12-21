@@ -50,7 +50,6 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
         verticalArrangement = Arrangement.Center
     ) {
 
-        // Todo: Configure the fonts
         Text("BURN",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.SemiBold,
@@ -97,8 +96,6 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
         }
 
         FilledTonalButton(onClick = { performLogin(email, password, context, onLoginSuccess) }) {
-        //TODO revert when finished testing
-
             Text("Login")
         }
 

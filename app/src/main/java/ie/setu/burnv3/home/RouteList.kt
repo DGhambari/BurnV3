@@ -27,15 +27,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 
-//@Composable
-// fun RoutesList(routes: List<Route>, paddingValues: PaddingValues) {
-//    LazyColumn(modifier = Modifier.padding(paddingValues)) {
-//        items(routes.size) { index ->
-//            RouteCard(routes[index])
-//        }
-//    }
-//}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RoutesList(userId: String, navController: NavController) {

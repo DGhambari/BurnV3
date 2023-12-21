@@ -42,7 +42,6 @@ fun RegisterScreen(onRegistrationSuccess: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Todo: Configure the fonts
         Text("BURN",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.SemiBold,

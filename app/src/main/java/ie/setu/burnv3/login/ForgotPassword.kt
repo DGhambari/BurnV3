@@ -42,7 +42,6 @@ fun ForgotPassword(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Todo: Configure the fonts
         Text("BURN", fontSize = 50.sp)
 
         Spacer(modifier = Modifier.height(16.dp))

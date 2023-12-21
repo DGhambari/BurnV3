@@ -5,13 +5,19 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -29,6 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -43,6 +50,10 @@ fun EditRouteForm(routeId: String, navController: NavController) {
     var area by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     val context = LocalContext.current
+    var startLat by remember { mutableStateOf("") }
+    var startLng by remember { mutableStateOf("") }
+    var stopLat by remember { mutableStateOf("") }
+    var stopLng by remember { mutableStateOf("") }
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
     var currentImageUrl by remember { mutableStateOf<String?>(null) }
     var isImageLoading by remember { mutableStateOf(false) }
@@ -53,13 +64,17 @@ fun EditRouteForm(routeId: String, navController: NavController) {
             area = fetchedRoute.area
             description = fetchedRoute.description
             currentImageUrl = fetchedRoute.imageUrl
+            startLat = fetchedRoute.startLat.toString()
+            startLng = fetchedRoute.startLng.toString()
+            stopLat = fetchedRoute.stopLat.toString()
+            stopLng = fetchedRoute.stopLng.toString()
             Log.d("EditRouteForm", "Loaded Image URL: $currentImageUrl")
             isImageLoading = false
         }
     }
 
     Column(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier.padding(16.dp).verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -99,6 +114,97 @@ fun EditRouteForm(routeId: String, navController: NavController) {
                 unfocusedIndicatorColor = Color.Transparent
             )
         )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            "Start Location",
+            style = MaterialTheme.typography.titleMedium,
+            fontSize = 14.sp
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 39.dp)
+        ) {
+            TextField(
+                modifier = Modifier
+                    .clip(shape = RoundedCornerShape(10.dp))
+                    .weight(1f),
+                value = startLat,
+                maxLines = 1,
+                onValueChange = { startLat = it },
+                singleLine = true,
+                label = { Text("Lat") },
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+
+            TextField(
+                modifier = Modifier
+                    .clip(shape = RoundedCornerShape(10.dp))
+                    .weight(1f),
+                value = startLng,
+                maxLines = 1,
+                onValueChange = { startLng = it },
+                singleLine = true,
+                label = { Text("Lng") },
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
+            )
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            "End Location",
+            style = MaterialTheme.typography.titleMedium,
+            fontSize = 14.sp
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 39.dp)
+        ) {
+            TextField(
+                modifier = Modifier
+                    .clip(shape = RoundedCornerShape(10.dp))
+                    .weight(1f),
+                value = stopLat,
+                maxLines = 1,
+                onValueChange = { stopLat = it },
+                singleLine = true,
+                label = { Text("Lat") },
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+
+            TextField(
+                modifier = Modifier
+                    .clip(shape = RoundedCornerShape(10.dp))
+                    .weight(1f),
+                value = stopLng,
+                maxLines = 1,
+                onValueChange = { stopLng = it },
+                singleLine = true,
+                label = { Text("Lng") },
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
+            )
+        }
+
         Log.d("EditRouteForm", "Passing Image URL to Picker: $currentImageUrl")
         ImagePicker(
             initialImageUrl = currentImageUrl,

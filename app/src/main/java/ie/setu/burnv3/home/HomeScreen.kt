@@ -12,7 +12,7 @@ import ie.setu.burnv3.appBars.MyBottomAppBar
 import ie.setu.burnv3.appBars.MyTopAppBar
 import ie.setu.burnv3.models.Route
 import ie.setu.burnv3.models.getUserRoutes
-import ie.setu.burnv3.models.signOut
+import ie.setu.burnv3.models.logOut
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,7 +35,7 @@ fun HomeScreen(
             MyTopAppBar(
                 drawerState = drawerState,
                 isDarkTheme = isDarkTheme,
-                onSignOut = { signOut(navController) }
+                onSignOut = { logOut(navController) }
             )
         },
         content = { paddingValues ->

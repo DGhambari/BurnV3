@@ -54,9 +54,9 @@ fun MyTopAppBar(
                     contentDescription = "Switch Theme"
                 )
             }
-            IconButton(onClick = { onSignOut() }) {
-                Icon(imageVector = Icons.Default.ExitToApp, contentDescription = "Sign Out")
-            }
+//            IconButton(onClick = { onSignOut() }) {
+//                Icon(imageVector = Icons.Default.ExitToApp, contentDescription = "Sign Out")
+//            }
         }
     )
 }

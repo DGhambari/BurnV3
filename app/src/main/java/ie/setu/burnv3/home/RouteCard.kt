@@ -65,6 +65,7 @@ fun RouteCard(route: Route, navController: NavController, ) {
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
+
                 // Edit button
                 IconButton(
                     onClick = {
@@ -76,10 +77,10 @@ fun RouteCard(route: Route, navController: NavController, ) {
                     },
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-//                        .padding(top = 12.dp, end = 12.dp)
                 ) {
                     Icon(imageVector = Icons.Filled.Edit, contentDescription = "Edit")
                 }
+
                 // Favorite button
                 IconButton(
                     onClick = {

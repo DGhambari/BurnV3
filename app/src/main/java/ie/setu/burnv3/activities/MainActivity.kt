@@ -26,8 +26,9 @@ import ie.setu.burnv3.login.RegisterScreen
 import ie.setu.burnv3.home.HomeScreen
 import ie.setu.burnv3.home.AddRouteForm
 import ie.setu.burnv3.home.EditRouteForm
+import ie.setu.burnv3.home.SplashScreen
 import ie.setu.burnv3.login.ForgotPassword
-import ie.setu.burnv3.map.MapScreen
+import ie.setu.burnv3.map.GoogleMapRoutesList
 import ie.setu.burnv3.models.getUserId
 import ie.setu.burnv3.navDrawer.NavDrawer
 import ie.setu.burnv3.ui.theme.BurnV3Theme
@@ -40,15 +41,14 @@ class MainActivity : ComponentActivity() {
             val isDarkTheme = remember { mutableStateOf(true) }
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
             val navController = rememberNavController()
-            val isMapActive = remember { mutableStateOf(false) }
 
             BurnV3Theme(useDarkTheme = isDarkTheme.value) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavDrawer(drawerState, navController, isMapActive) {
-                        AppNavigation(isDarkTheme, drawerState, navController, isMapActive)
+                    NavDrawer(drawerState, navController) {
+                        AppNavigation(isDarkTheme, drawerState, navController)
                     }
                 }
             }
@@ -63,11 +63,13 @@ fun AppNavigation(
     isDarkTheme: MutableState<Boolean>,
     drawerState: DrawerState,
     navController: NavHostController,
-    isMapActive: MutableState<Boolean>
 ) {
     val context = LocalContext.current
 
-    NavHost(navController = navController, startDestination = "login") {
+    NavHost(navController = navController, startDestination = "splash") {
+        composable("splash") {
+            SplashScreen(navController)
+        }
         composable("login") {
             LoginScreen(navController, onLoginSuccess = {
                 navController.navigate("home") {
@@ -83,15 +85,26 @@ fun AppNavigation(
         composable("home") {
             HomeScreen(isDarkTheme, navController, getUserId(), drawerState)
         }
+
         composable("addRoute") {
             AddRouteForm(navController)
         }
         composable("forgotPassword") {
             ForgotPassword(navController)
         }
-        composable("map") {
-            MapScreen(isMapActive)
+        composable("mapListRoutes") {
+            GoogleMapRoutesList(modifier = Modifier.fillMaxSize())
         }
+
+//        composable("mapAddMarker/{routeType}") { backStackEntry ->
+//            val routeType = backStackEntry.arguments?.getString("routeType")
+//            GoogleMapAddMarker(onLocationSelected = { selectedLatLng ->
+//                val locationString = "${selectedLatLng.latitude},${selectedLatLng.longitude}"
+//                navController.navigate("addRoute/$routeType/$locationString") {
+//                    popUpTo("addRoute") { inclusive = true }
+//                }
+//            })
+//        }
 
         composable("editRoute/{routeId}") { backStackEntry ->
             val routeId = backStackEntry.arguments?.getString("routeId")

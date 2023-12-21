@@ -1,11 +1,9 @@
 package ie.setu.burnv3.models
 
-import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -58,23 +56,22 @@ fun getUserProfile(): FirebaseUser? {
 }
 
 
-fun signOut(navController: NavController) {
-    val user = Firebase.auth.currentUser
+fun logOut(navController: NavController) {
+//    val user = Firebase.auth.currentUser
 
     try {
-        //FirebaseAuth.getInstance().signOut()
         Firebase.auth.signOut()
     } catch (e: Exception) {
-        Log.e("SignOut", "Error signing out: ${e.message}")
+        Log.e("LogOut", "Error logging out: ${e.message}")
     }
 
-    if (user != null) {
-        Log.e("SignOut", "User has not been successfully logged out. User ID: $user")
-
-    } else {
+//    if (user != null) {
+//        Log.e("SignOut", "User has not been successfully logged out. User ID: $user")
+//
+//    } else {
         navController.navigate("login") {
             popUpTo("home") { inclusive = true }
-        }
+//        }
     }
 }
 
